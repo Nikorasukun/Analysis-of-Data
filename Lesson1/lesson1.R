@@ -1,0 +1,100 @@
+# Binomial Distribution #####
+# indexing ####
+# into the help tab type dbinom
+# if you say ?distributions its gonna open the help tab with that word
+# 4 different functions for each random variable d,p,q,r
+## density, p=cdf, quantile, random generation from that rv
+
+# subport={0,...,n} for the binom, subport is the image
+# first occasion of poisson in history was to model horse's kicks
+
+# Binomial Random Variable (on Virtuale) for lesson 1
+
+# number of trails####
+n=100
+
+# success probability####
+p = 0.5
+
+# domain (support) of the rv####
+x = 0:n
+
+# probability distribution####
+dbinom(49, size=n, prob=p) # 0.078
+px = dbinom(x,n,p) #
+
+View(
+  cbind(
+    value=x,
+    prob=round(px,5)
+  )
+)
+
+# plot the prob distribution
+plot(
+  x,
+  px,
+  type="h", #histrogram like
+  lwd=2,
+  main=paste("Binomial Distribution - n=", n, "; p=", p)
+)
+
+# CDF ####
+Fx = pbinom(x,n,p)
+cbind(x,Fx)
+
+plot(
+  x,
+  Fx,
+  type="s",
+  lwd=2,
+  main="CDF of Binomial"
+)
+
+# plotting them, px and Fx in the same plot
+windows()
+par(mfrow=c(1,2)) # 1 row and 2 columns
+plot(
+  x,
+  px,
+  type="h", #histrogram like
+  lwd=2,
+  main=paste("Binomial Distribution - n=", n, "; p=", p)
+)
+plot(
+  x,
+  Fx,
+  type="s",
+  lwd=2,
+  main="CDF of Binomial"
+)
+
+# quantile function
+qbinom(0.5,n,p)
+qq = qbinom(seq(0.25,0.75,length=3),n,p)
+qq
+
+# Draw a random number from a rv
+rbinom(10,n,p)
+
+set.seed(4)
+rbinom(10,n,p)
+
+# our first simulation
+set.seed(5)
+n.draws = 20000
+
+sample.bin = rbinom(n.draws, n, p)
+
+# compare the theoretical mean and the simulated one
+mean(sample.bin)
+
+# the same for the variance
+n*p*(1-p)
+var(sample.bin) # it divides by n-1, unbiased mean
+
+#can we calculate P(X=50) by simulation?
+count.50<-sample.bin==50 #result is a logical vector, if we sum all the entries in it it's the number of times in which the result of the binomial is 50
+sum(count.50)/n.draws
+mean(sample.bin==50)
+dbinom(50,n,p)
