@@ -1,0 +1,24 @@
+---
+title: "RMarkdown"
+output:
+  html_document: default
+  word_document: default
+---
+
+Let us produce our first text and code.
+```{r first_chunk}
+set.seed(20)
+data = rnorm(20)
+summary(data)
+boxplot(data)
+
+
+
+```
+
+You can also work with latex
+
+$\int_a^bx^ndx - \alpha $
+
+
+
