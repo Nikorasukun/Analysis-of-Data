@@ -1,0 +1,78 @@
+# today we study poisson rv with lambda>30 for greater precision in the subset
+# sample sizes of 15, 50 and 800 to see the precision increase
+# we're gonna calculate the z-score for the mean of each sample size
+
+# set-up
+lambdat = 35
+sims = 4000 # montecarlo repetition of the same experiment, try different values
+m = c(15,50,800) # different sample sizes
+
+E.of.X = V.of.X = lambdat # expected value and variance of our rv, so lambda true
+
+# empty box for the results
+Z = matrix(NA, nrow=sims, ncol=length(m))
+
+set.seed(7)
+
+for(j in 1:length(m)) { # loop over length of m (sample size)
+  
+  for(i in 1:sims) { # loop over sims
+    
+    samp = rpois(n=m[j], lambda = lambdat) # our sample
+    sample.mean = mean(samp) # raw mean
+    Z[i,j] = (sample.mean-E.of.X)/sqrt(V.of.X/m[j]) # standardized mean
+    
+  } # closure of i-th for
+  
+} # closure of j-th for
+
+
+# hist(Z[,1], col="blue", main="nice histogram", freq = T, breaks = seq(-5,5,by=0.1))
+
+windows()
+hist(Z[,1], col="blue")
+hist(Z[,2], col="green", density = 80, add=T)
+hist(Z[,3], col="orange", density = 20, add=T)
+
+# alternative version
+windows()
+par(mfrow=c(3,1))
+for (j in 1:length(m)) {
+  
+  hist(Z[,j],
+       xlim=c(-4,4),
+       freq=F,
+       ylim=c(0,0.5),
+       breaks=40,
+       ylab="Probabilty",
+       xlab = "",
+       main = paste("Sample size =", m[j])
+  )
+  
+  x = seq(-4,4,by=0.01)
+  y = dnorm(x)
+  
+  lines(x,y,col="blue")
+  
+}
+
+# let us play with ggplot!
+# needs installation of package ggplot2 from cran
+# needs installation of package ggpubr from cran
+
+z.data = data.frame(val = as.vector(Z), samp.size = as.factor(rep(m, each=sims)))
+head(z.data)
+table(z.data$samp.size)
+str(z.data)
+
+
+# boxplot!
+boxplot(Z[,1], col="blue", range=0)
+boxplot(Z, col=2:4, range=0)
+
+
+
+
+
+
+
