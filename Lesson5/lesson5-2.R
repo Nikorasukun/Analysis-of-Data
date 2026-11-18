@@ -35,15 +35,16 @@ ggplot(datasaurus_dozen, aes(x=x, y=y, color = dataset))+
   theme(legend.position = "none")+
   facet_wrap(~dataset, ncol = 3)
   
-
-par(mfrow=c(3,4))
-for (i in 9) {
-  plot(datasaurus_dozen$x[i], add=TRUE)
-  
+windows()
+par(mfrow=c(3,3))
+for (i in 1:9) {
+  plot(datasaurus_dozen$x[datasaurus_dozen$dataset == i],
+       datasaurus_dozen$y[datasaurus_dozen$dataset == i])
 }
 
 ?plot
-  
+
+ 
   
   
   
