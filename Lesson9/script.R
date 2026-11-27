@@ -104,8 +104,20 @@ for(i in 1:n.draws) {
 cover.g = ifelse(lower.limits < mu.gamma & upper.limits > mu.gamma, 1, 0)
 mean(cover.g)
 
+cols = c("violet", "green")
 
+windows()
+plot(1:n.draws,
+     sample.means,
+     ylim = c(min(lower.limits), max(upper.limits)),
+     pch=19,
+)
 
+segments(1:n.draw, lower.limits,
+         1:n.draw, upper.limits,
+         col = cols[cover.g+1])
+
+abline(h = mu.gamma, col="red")
 
 
 
